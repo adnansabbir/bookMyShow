@@ -2,10 +2,9 @@
   "name": "bookmyshow",
   "version": "1.0.0",
   "description": "Low level design of a online movie show",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "start": "ts-node src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "ts-node src/index.ts"
   },
   "repository": {
     "type": "git",

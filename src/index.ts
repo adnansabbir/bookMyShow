@@ -72,4 +72,5 @@ console.log('\nAdnan cancels poran and thus it will be shown cancelled in histor
 const adnansBookedPoran = userAdnanSabbir.ticketBookingHistory.find(ticket=> ticket.bookedShow.movie.id === poran.id)
 adnansBookedPoran?.cancel()
 console.log(`${userAdnanSabbir.ticketBookingHistory.join('\n')}`)
+console.log('End')
 

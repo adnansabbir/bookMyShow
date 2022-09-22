@@ -1,3 +1,4 @@
+import {IPaymentMethod} from "./IPaymentMethod";
 import {Show} from "./Show";
 import {IUser} from "./IUser";
 
@@ -8,16 +9,18 @@ export class Ticket{
     private readonly _numberOfSeats: number
     private readonly _bookedShow: Show
     private readonly _owner: IUser
+    private readonly paymentMethod: IPaymentMethod
     private _cancelled: boolean
 
 
-    constructor(owner: IUser, bookedShow: Show, numberOfSeats: number, bookingTime: Date) {
+    constructor(owner: IUser, bookedShow: Show, numberOfSeats: number, paymentMethod: IPaymentMethod) {
         this._id = Ticket._idCounter++;
-        this._bookingTime = bookingTime;
+        this._bookingTime = new Date();
         this._owner = owner;
         this._numberOfSeats = numberOfSeats;
         this._bookedShow = bookedShow;
         this._cancelled = false
+        this.paymentMethod = paymentMethod
     }
 
 
@@ -59,7 +62,8 @@ export class Ticket{
             movie: this.bookedShow.movie.name,
             theatre: this.bookedShow.theatre.name,
             numberOfSeats: this.numberOfSeats,
-            cancelled: this.cancelled
+            cancelled: this.cancelled,
+            paymentMethod: this.paymentMethod.name
         })
     }
 }

@@ -1,7 +1,5 @@
 import {Movie} from "./Movie";
 import {Theatre} from "./Theatre";
-import {RegisteredUser} from "./RegisteredUser";
-import {Ticket} from "./Ticket";
 
 export class Show{
     private static _idCounter = 0
@@ -51,16 +49,5 @@ export class Show{
     get theatre(): Theatre {
         return this._theatre;
     }
-
-    bookTicket(user: RegisteredUser, seats: number): Ticket{
-        if(seats <= 0) throw new Error('Minimum number of seats to be selected is 1')
-        if(this.availableSeats < seats) throw new Error(`Only ${this.availableSeats}${seats} seats available`)
-
-        const ticket: Ticket = new Ticket(user, this, seats, new Date())
-        this._availableSeats -= seats
-        user.ticketBookingHistory.push(ticket)
-        return ticket
-    }
-
 
 }

@@ -1,16 +1,22 @@
+import {PaymentMethodsTypes} from "../enums/PaymentMethods.enum";
+import {IPaymentMethodFactory} from "./IPaymentMethodFactory";
+import {RegisteredUser} from "./RegisteredUser";
 import {Theatre} from "./Theatre";
 import {Show} from "./Show";
+import {Ticket} from "./Ticket";
 
 export class BookMyShow{
     private readonly _theatres: Array<Theatre>
     private _name: string
     private readonly moviesMap: Record<string, Array<Show>>
+    private readonly paymentMethodFactory: IPaymentMethodFactory
 
-    constructor(name: string, theaters?: Theatre[]) {
+    constructor(name: string, paymentMethodFactory: IPaymentMethodFactory) {
         this._name = name
-        this._theatres = theaters || new Array<Theatre>();
+        this._theatres = new Array<Theatre>();
         this.moviesMap = {}
         this.generateMovieMap()
+        this.paymentMethodFactory = paymentMethodFactory
     }
 
     generateMovieMap(){
@@ -51,6 +57,17 @@ export class BookMyShow{
         })
 
         return result
+    }
+
+    bookTicket(user: RegisteredUser, show: Show, seats: number, paymentMethodType: PaymentMethodsTypes): Ticket{
+        if(seats <= 0) throw new Error('Minimum number of seats to be selected is 1')
+        if(show.availableSeats < seats) throw new Error(`Only ${show.availableSeats}/${seats} seats available`)
+
+        const paymentMethod = this.paymentMethodFactory.createPaymentMethod(paymentMethodType)
+        const ticket: Ticket = new Ticket(user, show, seats, paymentMethod)
+        show.availableSeats -= seats
+        user.ticketBookingHistory.push(ticket)
+        return ticket
     }
 
     public toString(): string{
